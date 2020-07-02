@@ -1,0 +1,27 @@
+.grid {
+  margin-top: 2rem;
+  height: 100vh;
+}
+
+.row {
+  height: 1rem;
+  display: block;
+}
+
+#reset {
+  margin-right: 1rem;
+}
+
+@media (max-width: 400px) {
+  .grid {
+    margin-top: 1rem;
+  }
+  
+}
+
+@media (max-height: 700px) {
+  .grid {
+    margin-top: .5rem;
+  }
+}
+
