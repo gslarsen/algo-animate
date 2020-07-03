@@ -5,10 +5,10 @@ import Node from "./Node/Node";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 const ANIMATION_TIME = 3;
-const START_NODE_ROW = 12; // 20
-const START_NODE_COL = 15; // 15
-const FINISH_NODE_ROW = 12; // 20
-const FINISH_NODE_COL = 35; // 35
+const START_NODE_ROW = 12; 
+const START_NODE_COL = 15; 
+const FINISH_NODE_ROW = 12; 
+const FINISH_NODE_COL = 35; 
 const NUMBER_OF_COLUMNS = 50;
 const NUMBER_OF_ROWS = 35;
 
@@ -26,12 +26,15 @@ class Algovisuals extends Component {
     this.setState({ grid });
   }
 
-  handleMouseDown(row, col) {
+  handleMouseDown(row, col, isStart, isFinish) {
+    // debugger
+    if (isStart || isFinish) return;
     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid, mouseIsPressed: true });
   }
 
-  handleMouseEnter(row, col) {
+  handleMouseEnter(row, col, isStart, isFinish) {
+    if (isStart || isFinish) return;
     if (!this.state.mouseIsPressed) return;
     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid });
@@ -135,9 +138,9 @@ class Algovisuals extends Component {
                       isStart={isStart}
                       isWall={isWall}
                       mouseIsPressed={mouseIsPressed}
-                      onMouseDown={(row, col) => this.handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) =>
-                        this.handleMouseEnter(row, col)
+                      onMouseDown={(row, col, isStart, isFinish) => this.handleMouseDown(row, col, isStart, isFinish)}
+                      onMouseEnter={(row, col, isStart, isFinish) =>
+                        this.handleMouseEnter(row, col, isStart, isFinish)
                       }
                       onMouseUp={() => this.handleMouseUp()}
                       row={row}
