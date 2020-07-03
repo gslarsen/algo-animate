@@ -5,10 +5,12 @@ import Node from "./Node/Node";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 const ANIMATION_TIME = 3;
-const START_NODE_ROW = 20;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 20;
-const FINISH_NODE_COL = 35;
+const START_NODE_ROW = 20; // 20
+const START_NODE_COL = 15; // 15
+const FINISH_NODE_ROW = 20; // 20
+const FINISH_NODE_COL = 35; // 35
+const NUMBER_OF_COLUMNS = 50;
+const NUMBER_OF_ROWS = 50;
 
 class Algovisuals extends Component {
   constructor() {
@@ -36,11 +38,11 @@ class Algovisuals extends Component {
     this.setState({ grid: newGrid });
   }
 
-  handleMouseUp() {
+  handleMouseUp = () => {
     this.setState({ mouseIsPressed: false });
   }
 
-  handleClearBoard() {
+  handleResetBoard() {
     const visitedNodes = document.querySelectorAll(".node-visited");
     const pathNodes = document.querySelectorAll(".node-shortest-path");
     const wallNodes = document.querySelectorAll(".node-wall");
@@ -103,7 +105,7 @@ class Algovisuals extends Component {
 
     return (
       <div>
-        <button id="reset" onClick={() => this.handleClearBoard()}>
+        <button id="reset" onClick={() => this.handleResetBoard()}>
           Reset
         </button>
         <button onClick={() => this.visualizeDijkstra()}>Visualize</button>
@@ -140,9 +142,9 @@ class Algovisuals extends Component {
 }
 const getInitialGrid = () => {
   const grid = [];
-  for (let row = 0; row < 50; row++) {
+  for (let row = 0; row < NUMBER_OF_ROWS; row++) {
     const currentRow = [];
-    for (let col = 0; col < 50; col++) {
+    for (let col = 0; col < NUMBER_OF_COLUMNS; col++) {
       currentRow.push(createNode(col, row));
     }
     grid.push(currentRow);
