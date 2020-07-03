@@ -120,7 +120,7 @@ class Algovisuals extends Component {
         <button id="reset" onClick={() => this.handleResetBoard()}>
           Reset
         </button>
-        <button onClick={() => this.visualizeDijkstra()}>Show It!</button>
+        <button onClick={() => this.visualizeDijkstra()}>GO!</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
