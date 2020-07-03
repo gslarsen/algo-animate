@@ -5,12 +5,12 @@ import Node from "./Node/Node";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 const ANIMATION_TIME = 3;
-const START_NODE_ROW = 20; // 20
+const START_NODE_ROW = 12; // 20
 const START_NODE_COL = 15; // 15
-const FINISH_NODE_ROW = 20; // 20
+const FINISH_NODE_ROW = 12; // 20
 const FINISH_NODE_COL = 35; // 35
 const NUMBER_OF_COLUMNS = 50;
-const NUMBER_OF_ROWS = 50;
+const NUMBER_OF_ROWS = 35;
 
 class Algovisuals extends Component {
   constructor() {
@@ -32,7 +32,6 @@ class Algovisuals extends Component {
   }
 
   handleMouseEnter(row, col) {
-    
     if (!this.state.mouseIsPressed) return;
     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid });
@@ -40,14 +39,18 @@ class Algovisuals extends Component {
 
   handleMouseUp = () => {
     this.setState({ mouseIsPressed: false });
-  }
+  };
 
   handleResetBoard() {
     const visitedNodes = document.querySelectorAll(".node-visited");
     const pathNodes = document.querySelectorAll(".node-shortest-path");
     const wallNodes = document.querySelectorAll(".node-wall");
-    const nodeStart = document.querySelector(`#node-${START_NODE_ROW}-${START_NODE_COL}`);
-    const nodeFinish = document.querySelector(`#node-${FINISH_NODE_ROW}-${FINISH_NODE_COL}`);
+    const nodeStart = document.querySelector(
+      `#node-${START_NODE_ROW}-${START_NODE_COL}`
+    );
+    const nodeFinish = document.querySelector(
+      `#node-${FINISH_NODE_ROW}-${FINISH_NODE_COL}`
+    );
 
     [].forEach.call(pathNodes, function (el) {
       el.className = "node";
@@ -62,7 +65,7 @@ class Algovisuals extends Component {
     });
     nodeStart.className = "node node-start";
     nodeFinish.className = "node node-finish";
-    this.setState({grid: getInitialGrid(), mouseIsPressed: false});
+    this.setState({ grid: getInitialGrid(), mouseIsPressed: false });
   }
 
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -100,15 +103,24 @@ class Algovisuals extends Component {
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
+  toggleModal() {
+   document.querySelector(".backdrop").style.display="none";
+   document.querySelector(".modal").style.display="none";
+  }
+
   render() {
     const { grid, mouseIsPressed } = this.state;
 
     return (
       <div>
+        <div className="backdrop" onClick={() => this.toggleModal()}></div>
+        <div className="modal" onClick={() => this.toggleModal()}>
+          <h3 className="modal__title">Drag or click cells to create obstacles</h3>
+        </div>
         <button id="reset" onClick={() => this.handleResetBoard()}>
           Reset
         </button>
-        <button onClick={() => this.visualizeDijkstra()}>Visualize</button>
+        <button onClick={() => this.visualizeDijkstra()}>Show It!</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
