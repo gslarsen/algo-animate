@@ -31,6 +31,7 @@ class Node extends Component {
         onMouseUp={() => onMouseUp(row, col)}
         draggable={isStart || isFinish}
         onDragStart={() => onMouseDown(row, col)}
+        onDragOver={(event) => event.preventDefault()}
         onDragEnd={(event) => {
           /* THIS IS KEY to get element on drop */
           let elem= document.elementFromPoint(event.clientX, event.clientY);
