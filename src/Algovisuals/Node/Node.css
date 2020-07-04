@@ -10,8 +10,16 @@
   background-color: green;
 }
 
+.node-start:hover {
+  cursor: move;
+}
+
 .node-finish {
   background-color: red;
+}
+
+.node-finish:hover {
+  cursor: move;
 }
 
 .node-visited {
