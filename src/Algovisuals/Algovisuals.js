@@ -271,11 +271,11 @@ class Algovisuals extends Component {
         <div className="backdrop" onClick={() => this.toggleModal()}></div>
         <div className="modal" onClick={() => this.toggleModal()}>
           <ul className="list modal__title">
-            <li>Move start and end nodes where desired</li>
+            <li>Drag to move red start and green end nodes</li>
             <br />
-            <li>Drag or click cells to create obstacles</li>
+            <li>Drag or click cells to create black obstacles</li>
             <br />
-            <li>Hit 'GO!' to watch it run</li>
+            <li>Hit 'GO!' to watch the algorithm run</li>
           </ul>
         </div>
         <button id="reset" onClick={() => this.handleResetBoard()}>
