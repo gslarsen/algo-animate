@@ -271,7 +271,7 @@ class Algovisuals extends Component {
         <div className="backdrop" onClick={() => this.toggleModal()}></div>
         <div className="modal" onClick={() => this.toggleModal()}>
           <ul className="list modal__title">
-            <li>Drag to move red start and green end nodes</li>
+            <li>Drag to move green start and red end nodes</li>
             <br />
             <li>Drag or click cells to create black obstacles</li>
             <br />
