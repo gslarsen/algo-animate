@@ -273,7 +273,7 @@ class Algovisuals extends Component {
           <ul className="list modal__title">
             <li>Drag to move green start and red end nodes</li>
             <br />
-            <li>Drag or click cells to create black obstacles</li>
+            <li>Drag or click cells to create barriers</li>
             <br />
             <li>Hit 'GO!' to watch the algorithm run</li>
           </ul>
