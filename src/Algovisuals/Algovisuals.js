@@ -5,9 +5,9 @@ import Node from "./Node/Node";
 import { dijkstra } from "../algorithms/dijkstra";
 
 const ANIMATION_TIME = 5;
-const START_NODE_ROW = 12;
-const START_NODE_COL = 15;
-const END_NODE_ROW = 12;
+const START_NODE_ROW = 16;
+const START_NODE_COL = 27;
+const END_NODE_ROW = 8;
 const END_NODE_COL = 35;
 const NUMBER_OF_COLUMNS = 50;
 const NUMBER_OF_ROWS = 35;
