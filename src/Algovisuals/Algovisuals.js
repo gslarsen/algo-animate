@@ -58,7 +58,6 @@ class Algovisuals extends Component {
 
       nodeStart.className = "node node-start draggable";
       nodeFinish.className = "node node-finish draggable";
-      const visitedNodesInOrder = [...this.state.visitedNodesInOrder];
       const grid = [...this.state.grid]
       for (let row=0; row < grid.length; ++row) {
         for (let col = 0; col < grid[row].length; ++col) {
