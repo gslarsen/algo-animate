@@ -40,7 +40,6 @@ class Algovisuals extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.algoCalled !== this.state.algoCalled) {
-      console.log("componentDidUpdate...");
       const visitedNodes = document.querySelectorAll(".node-visited");
       const pathNodes = document.querySelectorAll(".node-shortest-path");
       const nodeStart = document.querySelector(
@@ -60,7 +59,6 @@ class Algovisuals extends Component {
       nodeStart.className = "node node-start draggable";
       nodeFinish.className = "node node-finish draggable";
       const visitedNodesInOrder = [...this.state.visitedNodesInOrder];
-      console.log("visitedNodesInOrder:",visitedNodesInOrder)
       const grid = [...this.state.grid]
       for (let row=0; row < grid.length; ++row) {
         for (let col = 0; col < grid[row].length; ++col) {
@@ -291,7 +289,6 @@ class Algovisuals extends Component {
   }
 
   visualizeDijkstra() {
-    console.log("visualizeDijkstra...");
     let { grid, startNode, endNode } = this.state;
     startNode = grid[startNode.row][startNode.col];
     endNode = grid[endNode.row][endNode.col];
