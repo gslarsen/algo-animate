@@ -1,3 +1,11 @@
+html, body {
+  overflow-y: hidden;
+}
+
+body {
+  position: relative;
+}
+
 .grid {
   margin-top: 2rem;
   height: 100vh;
@@ -61,8 +69,7 @@ button:focus {
 .modal__title {
   /* text-align: center; */
   margin: 0 0 0 0;
-  color: #0e4f1f;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .modal__actions {
@@ -94,6 +101,16 @@ button:focus {
 .modal__action--negative:active {
   background: #ff5454;
   border-color: #ff5454;
+}
+
+#start {
+  color: green;
+  font-weight: 700;
+}
+
+#end {
+  color: red;
+  font-weight: 700;
 }
 
 .list {
@@ -133,9 +150,14 @@ button:focus {
     margin: 0 0;
   }
 
-  /* .modal__title {
-    font-size: 1.25rem;
-    margin-bottom: 0;
-  } */
+  .row {
+    height: .75rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .row {
+    height: 1.25rem;
+  }
 }
 

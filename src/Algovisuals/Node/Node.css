@@ -87,3 +87,15 @@
   }
 }
 
+@media (max-width: 30rem) {
+  .node {
+    height: .75rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .node {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

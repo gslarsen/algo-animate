@@ -1,7 +1,5 @@
-// Performs Dijkstra's algorithm; returns *all* nodes in the order
-// in which they were visited. Also makes nodes point back to their
-// previous node, effectively allowing us to compute the shortest path
-// by backtracking from the finish node.
+// Performs Dijkstra's algorithm
+
 export function dijkstra(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
   startNode.distance = 0;
@@ -16,7 +14,9 @@ export function dijkstra(grid, startNode, finishNode) {
     if (closestNode.distance === Infinity) return visitedNodesInOrder;
     closestNode.isVisited = true;
     visitedNodesInOrder.push(closestNode);
-    if (closestNode === finishNode) return visitedNodesInOrder;
+    if (closestNode === finishNode) {
+      return {visitedNodesInOrder, nodesInShortestPathOrder: getNodesInShortestPathOrder(finishNode)};
+    }
     updateUnvisitedNeighbors(closestNode, grid);
   }
 }
@@ -28,18 +28,37 @@ function sortNodesByDistance(unvisitedNodes) {
 function updateUnvisitedNeighbors(node, grid) {
   const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
   for (const neighbor of unvisitedNeighbors) {
-    neighbor.distance = node.distance + 1;
-    neighbor.previousNode = node;
+    if (
+      (neighbor.row < node.row && neighbor.col < node.col) ||
+      (neighbor.row < node.row && neighbor.col > node.col) ||
+      (neighbor.row > node.row && neighbor.col < node.col) ||
+      (neighbor.row > node.row && neighbor.col > node.col)
+    ) {
+      if (node.distance + Math.SQRT2 < neighbor.distance) {
+        neighbor.distance = node.distance + Math.SQRT2;
+        neighbor.previousNode = node;
+      }
+    } else if (node.distance + 1 < neighbor.distance) {
+      neighbor.distance = node.distance + 1;
+      neighbor.previousNode = node;
+    }
   }
 }
 
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
   const { col, row } = node;
+  if (row > 0 && col > 0) neighbors.push(grid[row - 1][col - 1]);
   if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (row > 0 && col < grid[0].length - 1)
+    neighbors.push(grid[row - 1][col + 1]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  if (row < grid.length - 1 && col > 0) neighbors.push(grid[row + 1][col - 1]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (row < grid.length - 1 && col < grid[0].length - 1)
+    neighbors.push(grid[row + 1][col + 1]);
+
   const notVisitedNeighbors = neighbors.filter(
     (neighbor) => !neighbor.isVisited
   );

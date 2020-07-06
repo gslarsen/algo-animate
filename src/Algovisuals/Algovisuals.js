@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import "./Algovisuals.css";
 import Node from "./Node/Node";
-import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
+import { dijkstra } from "../algorithms/dijkstra";
 
-const ANIMATION_TIME = 3;
+const ANIMATION_TIME = 5;
 const START_NODE_ROW = 12;
 const START_NODE_COL = 15;
 const END_NODE_ROW = 12;
@@ -28,12 +28,50 @@ class Algovisuals extends Component {
       },
       isStartNode: false,
       isEndNode: false,
+      algoCalled: false,
+      visitedNodesInOrder: [],
     };
   }
 
   componentDidMount() {
     const grid = this.getInitialGrid();
     this.setState({ grid });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.algoCalled !== this.state.algoCalled) {
+      console.log("componentDidUpdate...");
+      const visitedNodes = document.querySelectorAll(".node-visited");
+      const pathNodes = document.querySelectorAll(".node-shortest-path");
+      const nodeStart = document.querySelector(
+        `#node-${this.state.startNode.row}-${this.state.startNode.col}`
+      );
+      const nodeFinish = document.querySelector(
+        `#node-${this.state.endNode.row}-${this.state.endNode.col}`
+      );
+      [].forEach.call(pathNodes, function (el) {
+        el.className = "node";
+      });
+
+      [].forEach.call(visitedNodes, function (el) {
+        el.className = "node";
+      });
+
+      nodeStart.className = "node node-start draggable";
+      nodeFinish.className = "node node-finish draggable";
+      const visitedNodesInOrder = [...this.state.visitedNodesInOrder];
+      console.log("visitedNodesInOrder:",visitedNodesInOrder)
+      const grid = [...this.state.grid]
+      for (let row=0; row < grid.length; ++row) {
+        for (let col = 0; col < grid[row].length; ++col) {
+          const node = grid[row][col];
+          node.isVisited = false;
+          node.distance = Infinity;
+          node.previousNode = null;
+        }
+      }
+      this.setState({grid, visitedNodesInOrder: [], algoCalled: false})
+    }
   }
 
   handleMouseDown(row, col) {
@@ -241,22 +279,28 @@ class Algovisuals extends Component {
   }
 
   animateShortestPath(nodesInShortestPathOrder) {
-    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-      setTimeout(() => {
-        const node = nodesInShortestPathOrder[i];
-        document.getElementById(`node-${node.row}-${node.col}`).className +=
-          " node node-shortest-path";
-      }, 50 * i);
+    if (nodesInShortestPathOrder.length > 0) {
+      for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+        setTimeout(() => {
+          const node = nodesInShortestPathOrder[i];
+          document.getElementById(`node-${node.row}-${node.col}`).className +=
+            " node node-shortest-path";
+        }, 50 * i);
+      }
     }
   }
 
   visualizeDijkstra() {
+    console.log("visualizeDijkstra...");
     let { grid, startNode, endNode } = this.state;
     startNode = grid[startNode.row][startNode.col];
     endNode = grid[endNode.row][endNode.col];
-    const visitedNodesInOrder = dijkstra(grid, startNode, endNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(endNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    const visitedNodes = dijkstra(grid, startNode, endNode);
+    this.setState({ algoCalled: true, visitedNodesInOrder: visitedNodes.visitedNodesInOrder });
+    this.animateDijkstra(
+      visitedNodes.visitedNodesInOrder,
+      visitedNodes.nodesInShortestPathOrder
+    );
   }
 
   toggleModal() {
@@ -271,11 +315,11 @@ class Algovisuals extends Component {
         <div className="backdrop" onClick={() => this.toggleModal()}></div>
         <div className="modal" onClick={() => this.toggleModal()}>
           <ul className="list modal__title">
-            <li>Drag to move green start and red end nodes</li>
+            <li>Drag to move <span id="start">green</span> start and <span id="end">red</span> end nodes</li>
             <br />
-            <li>Drag or click cells to create barriers</li>
+            <li>Drag or click nodes to create barriers (the search can move to any contiguous non-black node)</li>
             <br />
-            <li>Hit 'GO!' to watch the algorithm run</li>
+            <li>Select 'GO!' to watch Dijkstra's algorithm find the shortest path</li>
           </ul>
         </div>
         <button id="reset" onClick={() => this.handleResetBoard()}>
