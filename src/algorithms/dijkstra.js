@@ -1,4 +1,4 @@
-// Performs Dijkstra's algorithm
+// Dijkstra's algorithm
 
 export function dijkstra(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
@@ -33,12 +33,12 @@ function updateUnvisitedNeighbors(node, grid) {
       (neighbor.row < node.row && neighbor.col > node.col) ||
       (neighbor.row > node.row && neighbor.col < node.col) ||
       (neighbor.row > node.row && neighbor.col > node.col)
-    ) {
+    ) { // it's a diagonal node, so square root of 2 distance
       if (node.distance + Math.SQRT2 < neighbor.distance) {
         neighbor.distance = node.distance + Math.SQRT2;
         neighbor.previousNode = node;
       }
-    } else if (node.distance + 1 < neighbor.distance) {
+    } else if (node.distance + 1 < neighbor.distance) { // else orthogonal node
       neighbor.distance = node.distance + 1;
       neighbor.previousNode = node;
     }
@@ -48,6 +48,7 @@ function updateUnvisitedNeighbors(node, grid) {
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
   const { col, row } = node;
+  // 8 neighbors
   if (row > 0 && col > 0) neighbors.push(grid[row - 1][col - 1]);
   if (row > 0) neighbors.push(grid[row - 1][col]);
   if (row > 0 && col < grid[0].length - 1)

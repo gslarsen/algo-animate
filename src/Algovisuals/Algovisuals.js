@@ -71,6 +71,32 @@ class Algovisuals extends Component {
     }
   }
 
+  getInitialGrid = () => {
+    const grid = [];
+    for (let row = 0; row < NUMBER_OF_ROWS; row++) {
+      const currentRow = [];
+      for (let col = 0; col < NUMBER_OF_COLUMNS; col++) {
+        currentRow.push(this.createNode(col, row));
+      }
+      grid.push(currentRow);
+    }
+    return grid;
+  };
+
+  createNode = (col, row) => {
+    const { startNode, endNode } = this.state;
+    return {
+      col,
+      row,
+      isStart: row === startNode.row && col === startNode.col,
+      isFinish: row === endNode.row && col === endNode.col,
+      distance: Infinity,
+      isVisited: false,
+      isWall: false,
+      previousNode: null,
+    };
+  };
+
   handleMouseDown(row, col) {
     const { grid, startNode, endNode } = this.state;
 
@@ -157,32 +183,6 @@ class Algovisuals extends Component {
     this.setState({ mouseIsPressed: false });
   };
 
-  getInitialGrid = () => {
-    const grid = [];
-    for (let row = 0; row < NUMBER_OF_ROWS; row++) {
-      const currentRow = [];
-      for (let col = 0; col < NUMBER_OF_COLUMNS; col++) {
-        currentRow.push(this.createNode(col, row));
-      }
-      grid.push(currentRow);
-    }
-    return grid;
-  };
-
-  createNode = (col, row) => {
-    const { startNode, endNode } = this.state;
-    return {
-      col,
-      row,
-      isStart: row === startNode.row && col === startNode.col,
-      isFinish: row === endNode.row && col === endNode.col,
-      distance: Infinity,
-      isVisited: false,
-      isWall: false,
-      previousNode: null,
-    };
-  };
-
   getNewGridWithWallToggled = (grid, row, col) => {
     const newGrid = grid.slice();
     const node = newGrid[row][col];
@@ -260,6 +260,10 @@ class Algovisuals extends Component {
   }
 
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+    if (!visitedNodesInOrder) {
+      this.toggleNoPathToEndNodeModal();
+      return;
+    }
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -304,10 +308,28 @@ class Algovisuals extends Component {
     document.querySelector(".modal").style.display = "none";
   }
 
+  toggleNoPathToEndNodeModal() {
+    const backdrop = document.querySelector(".no-path-backdrop");
+    const modal = document.querySelector(".no-path-modal");
+
+    if (backdrop.style.display === "none") {
+      backdrop.style.display = "block";
+      modal.style.display = "block";
+    } else {
+      backdrop.style.display = "none";
+      modal.style.display = "none";
+    }
+  }
+
   render() {
     const { grid, mouseIsPressed, startNode, endNode } = this.state;
     return (
       <div>
+        <div className="no-path-backdrop" onClick={() => this.toggleNoPathToEndNodeModal()}></div>
+        <div className="no-path-modal" onClick={() => this.toggleNoPathToEndNodeModal()}>
+          <h3 className="list modal__title">Try again with the obstacles,</h3>
+          <h3 className="list modal__title">as there's no path to the end node!</h3>
+        </div>
         <div className="backdrop" onClick={() => this.toggleModal()}></div>
         <div className="modal" onClick={() => this.toggleModal()}>
           <ul className="list modal__title">
