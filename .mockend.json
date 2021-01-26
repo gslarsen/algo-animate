@@ -1,0 +1,12 @@
+{
+  "activities": "activity[]",
+  "activity": {
+    "shortName": "string",
+    "description": "int",
+    "costElements": "cost[]",
+    "cost": {
+      "projectCostElement": "string",
+      "estimated": "int"
+    }
+  }
+}
